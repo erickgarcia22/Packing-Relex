@@ -1,0 +1,35 @@
+RELEX PACKING — CONTINUACIÓN EN CODEX
+
+Este ZIP contiene el código fuente actual con las modificaciones locales. No incluye dependencias, credenciales ni registros de la base de datos. No es un despliegue terminado para Cloudflare.
+
+Objetivo: publicar la app en Cloudflare Workers y trasladar los registros del sitio actual a una nueva base D1.
+
+Estado confirmado:
+- Wrangler está autenticado en la computadora Windows del usuario. Esa sesión no está en este entorno ni en este ZIP.
+- Cuenta Cloudflare: 93659916839e266f1dd8193b1e35bddd.
+- Base D1 proporcionada por el usuario: 7d4687a0-25c2-49cf-a91a-61ce02235257. Verificar su nombre y pertenencia antes de usarla.
+- Sitio original: https://relex-packing.erickg2204.chatgpt.site
+- Project ID original: appgprj_6ac443f4bfc48191a5ffa73f2c0e98c1
+- Tablas originales observadas: members, packages, case_events.
+- Migraciones SQL en drizzle; esquema en db/schema.ts.
+- El código aún usa cabeceras de autenticación de Sites en app/chatgpt-auth.ts. Hay que adaptar el acceso para el destino Cloudflare antes de publicar. No quitar protecciones ni hacer públicas APIs privadas sin revisar el alcance.
+- No se han aplicado las migraciones a la nueva D1 ni trasladado registros.
+- No hay remoto Git configurado en este checkout.
+- Modificaciones locales: app/page.tsx, app/components/RapidScanner.tsx, app/globals.css.
+
+Requisitos del usuario a verificar contra el código:
+- Eliminar toda modificación de Firebase. No agregar Google/Firebase al acceso de la app.
+- Botón Iniciar embalaje con transición directa a cámara; eliminar Nuevo embalaje y confirmación al escanear; dejar embalaje en curso.
+- Escaneo automático al activar cámara, registrar por número de envío, contador de paquetes y alerta de duplicados.
+- Flex: QR con id, sender_id, hash_code y security_digit. Colecta: QR con id y t=lm. Tomar id como número de envío y detectar modalidad automáticamente.
+- El pedido de operador y usuarios cambió durante la conversación: inicialmente se solicitó mostrar operador y acceso con contraseña; después se pidió eliminar usuario/sincronización por el momento. Revisar implementación y aclarar sólo si necesario.
+
+Próximas tareas:
+1. Leer las instrucciones del proyecto y revisar el código y configuración de compilación (package.json, vite.config.ts, scripts/run-framework.mjs).
+2. Preparar configuración de Workers con DB vinculada a la D1 del usuario. Verificar compatibilidad real de compilación; no asumir que el código de Sites ya se puede publicar sin adaptación.
+3. Resolver el acceso de la app conforme a los requisitos actuales sin Firebase.
+4. Exportar los registros reales mediante una fuente autorizada; este ZIP no contiene ese respaldo. Mantener el sitio original hasta verificar la migración.
+5. Aplicar migraciones, importar y verificar registros sin sobrescribir datos existentes.
+6. Compilar, probar escaneo/duplicados y publicar con Wrangler desde Windows autenticado. Verificar URL y funcionamiento.
+
+Este documento es un resumen de continuidad, no una transcripción íntegra del chat.
